@@ -1,63 +1,59 @@
 function i_plr()
     plr={
-        x=15,
-        y=64,
+        x=15*8,
+        y=64*8,
         sp=1,
         dx=0,
         dy=0,
         flp=false,
         spd=1,
-        state="idle"
+        
     }
     anim_timer=0
+    move=false
 end
 
 function u_plr()
 
     --movement
     if btn(0) then
+        move=true
         plr.dx=-plr.spd
-        plr.state="side"
+        plr.sp=2
+        plr.flp=true
     elseif btn(1) then
+        move=true
         plr.dx=plr.spd
-        plr.state="side"
+        plr.sp=2
+        plr.flp=false
     else
         plr.dx=0
-        
+        move=false
     end
+
     if btn(2) then
+        move=true
         plr.dy=-plr.spd
-        plr.state="idle"
+        plr.sp=1
     elseif btn(3) then
+        move=true
         plr.dy=plr.spd
-        plr.state="idle"
+        plr.sp=1
     else
         plr.dy=0
-        
+        -- move=false
     end
-    if plr.dx==0 then
-        plr.state="idle"
+    
+    if move==false then
+        plr.sp=1
     end
+    
+
     plr.x+=plr.dx
     plr.y+=plr.dy
-    anim_state("idle")
-    anim_state("side")
+
 end
 
 function d_plr()
-    spr(plr.sp,plr.x,plr.y)
-end
-
---anim state
-function anim_state(state)
-    if anim_timer<0 then
-        if plr.state==state then
-            plr.sp+=1
-            if plr.sp>3 then
-                plr.sp=1
-            end
-        end
-        anim_timer=6
-    end
-    anim_timer-=1
+    spr(plr.sp,plr.x,plr.y,1,1,plr.flp)
 end
